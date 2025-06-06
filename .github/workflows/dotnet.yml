@@ -1,0 +1,31 @@
+name: .NET Build and Package
+
+on:
+  push:
+    branches: [ main ]  # Runs when pushing to main
+
+jobs:
+  build:
+    runs-on: windows-latest  # Windows agent for .NET & PowerShell
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'  # Or 6.0.x if you're using .NET 6
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release
+
+    - name: Publish
+      run: dotnet publish -c Release -o publish
+
+    - name: Create Zip Package
+      run: powershell Compress-Archive -Path publish\* -DestinationPath DucAnh.zip
+
