@@ -28,4 +28,10 @@ jobs:
 
     - name: Create Zip Package
       run: powershell Compress-Archive -Path publish\* -DestinationPath DucAnh.zip
+    
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: DucAnhPackage
+        path: DucAnh.zip
 
